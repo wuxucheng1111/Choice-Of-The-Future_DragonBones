@@ -30,6 +30,7 @@ public class BoundingBox : BaseDemo
         UnityFactory.factory.LoadTextureAtlasData("mecha_2903/mecha_2903_tex");
         UnityFactory.factory.LoadDragonBonesData("bounding_box_tester/bounding_box_tester_ske");
         UnityFactory.factory.LoadTextureAtlasData("bounding_box_tester/bounding_box_tester_tex");
+
         // Build Armature
         this._armatureComp = UnityFactory.factory.BuildArmatureComponent("mecha_2903d");
 

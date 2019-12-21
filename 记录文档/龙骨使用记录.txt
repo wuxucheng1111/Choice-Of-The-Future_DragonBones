@@ -1,0 +1,45 @@
+using DragonBones;
+public class MyDragonBone: MonoBehaviour
+{
+	private UnityArmatureComponent _armatureComp;	//定义UnityArmatureComponent变量
+	void Start()
+    {
+        UnityFactory.factory.LoadDragonBonesData("mecha_2903/mecha_2903_ske");	//缓存mecha_2903_ske.json文件的数据
+        UnityFactory.factory.LoadTextureAtlasData("mecha_2903/mecha_2903_tex");	//缓存mecha_2903_tex贴图数据
+        this._armatureComp = UnityFactory.factory.BuildArmatureComponent("mecha_2903d");	//创建一个实例，名称应与json文件中的名称一致
+        this._armatureComp.animation.Play("idle");	//播放实例中的idle动画
+    }
+	void Update()
+    {
+		if (“一些条件”)
+		{
+			//一些操作（如移动等）
+			
+			if (_armatureComp.animation.lastAnimationName != "walk")	//过渡到walk动画，每次运行FadeIn方法都会从头播放动画，因此需要加一个判断
+            {
+                this._armatureComp.animation.FadeIn("walk", 0.2f);
+            }
+		}
+		else
+        {
+            if (_armatureComp.animation.lastAnimationName != "idle")	//返回无操作的idle动画，同样需要加判断，否则会不停从头播放
+            {
+                this._armatureComp.animation.FadeIn("idle", 0.2f);
+            }
+        }		
+	}
+	
+	void BoundingBoxCheck()
+	{
+		//判断点是否在所有插槽的自定义包围盒内
+		Slot containsTargetA = this._armatureComp.armature.ContainsPoint(this._helpPointA.x, this._helpPointA.y);
+        Slot containsTargetB = this._armatureComp.armature.ContainsPoint(this._helpPointB.x, this._helpPointB.y);
+		
+		//判断线段是否与骨架的所有插槽的自定义包围盒相交
+		Slot intersectsSlots = this._armatureComp.armature.IntersectsSegment(this._helpPointA.x, this._helpPointA.y,
+                                                                            this._helpPointB.x, this._helpPointB.y,
+                                                                            this._intersectionPointA, _intersectionPointB, _normalRadians);
+	}
+
+}
+
