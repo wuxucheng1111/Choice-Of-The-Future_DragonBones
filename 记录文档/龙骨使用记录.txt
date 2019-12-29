@@ -1,45 +1,27 @@
-using DragonBones;
-public class MyDragonBone: MonoBehaviour
-{
-	private UnityArmatureComponent _armatureComp;	//定义UnityArmatureComponent变量
-	void Start()
-    {
-        UnityFactory.factory.LoadDragonBonesData("mecha_2903/mecha_2903_ske");	//缓存mecha_2903_ske.json文件的数据
-        UnityFactory.factory.LoadTextureAtlasData("mecha_2903/mecha_2903_tex");	//缓存mecha_2903_tex贴图数据
-        this._armatureComp = UnityFactory.factory.BuildArmatureComponent("mecha_2903d");	//创建一个实例，名称应与json文件中的名称一致
-        this._armatureComp.animation.Play("idle");	//播放实例中的idle动画
-    }
-	void Update()
-    {
-		if (“一些条件”)
-		{
-			//一些操作（如移动等）
-			
-			if (_armatureComp.animation.lastAnimationName != "walk")	//过渡到walk动画，每次运行FadeIn方法都会从头播放动画，因此需要加一个判断
-            {
-                this._armatureComp.animation.FadeIn("walk", 0.2f);
-            }
-		}
-		else
-        {
-            if (_armatureComp.animation.lastAnimationName != "idle")	//返回无操作的idle动画，同样需要加判断，否则会不停从头播放
-            {
-                this._armatureComp.animation.FadeIn("idle", 0.2f);
-            }
-        }		
-	}
-	
-	void BoundingBoxCheck()
-	{
-		//判断点是否在所有插槽的自定义包围盒内
-		Slot containsTargetA = this._armatureComp.armature.ContainsPoint(this._helpPointA.x, this._helpPointA.y);
-        Slot containsTargetB = this._armatureComp.armature.ContainsPoint(this._helpPointB.x, this._helpPointB.y);
-		
-		//判断线段是否与骨架的所有插槽的自定义包围盒相交
-		Slot intersectsSlots = this._armatureComp.armature.IntersectsSegment(this._helpPointA.x, this._helpPointA.y,
-                                                                            this._helpPointB.x, this._helpPointB.y,
-                                                                            this._intersectionPointA, _intersectionPointB, _normalRadians);
-	}
-
-}
+1、实例化一个龙骨角色有两种方法
+1）通过龙骨数据文件名称字符串加载
+	将数据加载到缓存
+    UnityFactory.factory.LoadDragonBonesData("mecha_2903/mecha_2903_ske");	//缓存mecha_2903_ske数据文件
+    UnityFactory.factory.LoadTextureAtlasData("mecha_2903/mecha_2903_tex");	//缓存mecha_2903_tex贴图文件
+    this._armatureComp = UnityFactory.factory.BuildArmatureComponent("mecha_2903d");	//创建一个实例，名称应与json文件中的名称一致
+2）右键ske数据文件，Create->DragonBones->Armature Object，生成Data文件，Hierarchy窗口右键DragonBones->Armature Object，生成一个实例，DragonBones Data选择刚生成的Data文件，直接在窗口中创建一个龙骨角色。
+2、动画相关
+1）播放动画：
+UnityArmatureComponent.animation.Play("动画名称字符串");
+2）切换动画：
+UnityArmatureComponent.animation.FadeIn("动画名称字符串", 切换时间);
+每次运行FadeIn方法都会从头播放动画，如果在Update方法中连续调用，则需要加一个判断当前在播放的是什么动画
+3、碰撞检测
+1）判断点是否在所有插槽的自定义包围盒内：
+UnityArmatureComponent.armature.ContainsPoint(Vector3.x, Vector3.y);
+返回与点相交的包围盒的插槽。
+2）判断线段是否与骨架的所有插槽的自定义包围盒相交
+UnityArmatureComponent.armature.IntersectsSegment(float xA, float yA, float xB, float yB,
+                                       Point intersectionPointA = null,
+                                       Point intersectionPointB = null,
+                                       Point normalRadians = null)
+返回线段从起点到终点相交的第一个自定义边界框的插槽。
+4、插槽图片替换
+UnityFactory.factory.ReplaceSlotDisplay(string dragonBonesName, string armatureName, string slotName, string displayName, Slot slot, int displayIndex = -1)
+六个参数为1.实例的缓存名称。2.骨架数据名称。3.插槽数据名称。4.显示对象数据名称。5.插槽。6.被替换的显示对象数据的索引（如果未设置，则替换当前的显示对象数据）。
 
