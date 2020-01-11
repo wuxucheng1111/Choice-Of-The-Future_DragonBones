@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/DragonBones/Demos/Scenes/Scorpion and Balloon.unity
+    guid: fa11c09fbbfdf2d4ab8822978efb3b8b
   m_configObjects: {}

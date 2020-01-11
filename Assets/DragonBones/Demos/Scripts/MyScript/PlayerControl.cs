@@ -48,11 +48,11 @@ public class PlayerControl : MonoBehaviour
     {
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
+        rb.velocity = new Vector2(x * moveSpeed, y * moveSpeed);
         if (x != 0 || y != 0)
         {
             //_armatureComp.transform.Translate(x * moveSpeed, y * moveSpeed, 0, Space.World);
-            _armatureComp.transform.rotation = Quaternion.Euler(0, 0, (Vector2.SignedAngle(Vector2.right, new Vector2(x, y))));
-            rb.velocity = new Vector2(x * moveSpeed, y * moveSpeed);
+            _armatureComp.transform.rotation = Quaternion.Euler(0, 0, (Vector2.SignedAngle(Vector2.right, new Vector2(x, y))));            
             if (x != 0)
             {
                 _armatureComp.transform.localScale = new Vector3(1, x, 1);

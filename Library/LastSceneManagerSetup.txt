@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/DragonBones/Demos/Scenes/MyScene.unity
+- path: Assets/DragonBones/Demos/Scenes/Scorpion and Balloon.unity
   isLoaded: 1
   isActive: 1
